@@ -5,9 +5,10 @@ int alertFailureCount = 0;
 
 int networkAlertStub(float celcius) {
     std::cout << "ALERT: Temperature is " << celcius << " celcius.\n";
+    if(celcius > 250)
+        return 500;
     // Return 200 for ok
     // Return 500 for not-ok
-    // stub always succeeds and returns 200
     return 200;
 }
 
@@ -23,9 +24,30 @@ void alertInCelcius(float farenheit) {
     }
 }
 
-int main() {
-    alertInCelcius(400.5);
-    alertInCelcius(303.6);
+void testAlertFailureCount() {
+
+    alertFailureCount = 0;
+    
+    // Test cases
+    alertInCelcius(200); 
+    std::cout << "AlertFailureCount = " << alertFailureCount << std::endl;
+    assert(alertFailureCount == 1);
+    
+    alertInCelcius(300); 
+    std::cout << "AlertFailureCount = " << alertFailureCount << std::endl;
+    assert(alertFailureCount == 2);
+    
+    alertInCelcius(150);   
+    std::cout << "AlertFailureCount = " << alertFailureCount << std::endl;
+    assert(alertFailureCount == 2); 
+
+    std::cout << "All tests passed successfully!\n";
+}
+
+
+int main() {    
+    testAlertFailureCount();
+
     std::cout << alertFailureCount << " alerts failed.\n";
     std::cout << "All is well (maybe!)\n";
     return 0;
